@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dragons</title>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+</head>
+<body id="body" class="hide">
+
+	<div id="main_vue">
+
+		<!-- Header -->
+		<div class="header_margin_bottom"></div>
+		<header>
+			<div class="main_icon"><img src="icons/As_cannes_logo_noir.png"/></div>
+			<!-- search -->
+			<div class="search">
+				<i class="fas fa-2x fa-search"></i>
+				<input id="search_bar" v-model="search" placeholder="Recherchez"></input>
+			</div>
+			<!-- /search -->
+		</header>
+		<!-- /Header -->
+
+		<!-- Main content -->
+		<div class="title_and_sorter_container">
+			<h2>ADHÉRENTS</h2>
+			<!-- sort -->
+			<select id="sorter" v-model="by">
+				<option value="">Trier par</option>
+				<option value="name">Nom</option>
+				<option value="age">Age</option>
+				<option value="registered">Date d'enregistrement</option>
+				<option value="company">Entreprise</option>
+			</select>
+			<!-- /sort -->
+		</div>
+		
+		<!-- membersList -->
+		<div id="members_list">
+			<table class="table_head">
+				<tbody>
+					<tr>
+						<td>NOM</td>
+						<td>PRÉNOM</td>
+						<td>ÂGE</td>
+						<td>EMPLOYEUR</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="table_body_scrollable">
+				<table class="table_body">
+					<tbody>
+						<tr class="member_name" v-for="member in filterName" v-on:click="memberSelection(member)">
+							<td>{{ name(member).toUpperCase() }}</td>
+							<td>{{ firstname(member) }}</td>
+							<td>{{ member.age }}</td>
+							<td>{{ member.company }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- /membersList -->
+
+		<!-- members info -->
+		<div id="member_info" class="member_info_content">
+			<div class="picture"><img v-bind:src="member.picture"/></div>
+			<div class="member_info">
+				<p>Nom : <span>{{ name(member) }}</span></p>
+				<p>Prénom : <span>{{ firstname(member) }}</span></p>
+				<p>Age : <span>{{ member.age }}</span></p>
+				<p>Genre : <span>{{ member.gender }}</span></p>
+				<p>Email : <a v-bind:href="'mailto:' + member.email"><span>{{ member.email }}</span></a></p>
+				<p>Adresse : <span>{{ member.address }}</span></p>
+				<p>Téléphone : <span>{{ member.phone }}</span></p>
+				<p>Date d'enregistrement : <span>{{ registered(member) }}</span></p>
+				<p v-if="member.isActive">Activité : <span>membre actif</span></p>
+				<p v-else>Activité : <span>membre inactif</span></p>
+				<p>A propos : <span>{{ member.about }}</span></p>
+			</div>
+		</div>
+		<!-- /members info -->
+
+		<!-- member friends -->
+		<div id="member_friends">
+			<ul class="friends">
+				<li class="friend" v-for="friend in member.friends"><i class="far fa-2x fa-smile"></i><span>{{ friend.name }}</span></li>
+			</ul>
+		</div>
+		<!-- /member friends -->
+	</div>
+
+	<div class="map" id="map"></div>
+
+	<!-- statistics -->
+	<div id="statistics" class="statistics">
+		<canvas id="stat_1" class="donut" width="400" height="400"></canvas>
+		<canvas id="stat_2" class="donut" width="400" height="400"></canvas>
+		<canvas id="stat_3" class="bars" width="400" height="400"></canvas>
+	</div>
+	<!-- /statistics -->
+
+	<button id="statisticsButton" class="main_button">STATISTIQUES</button>
+	<button id="back" class="main_button">LISTE DE MEMBRES</button>
+	<button id="friendsButton" class="main_button">AMIS</button>
+	<button id="back_friends" class="main_button">INFORMATION DU MEMBRE</button>
+	
+	<!-- /Main content -->
+	<!-- Footer -->
+	<div class="footer_margin_top"></div>
+	<footer>
+		<div class="footer_icons">
+			<a href="#"><i class="fas fa-2x fa-desktop"></i></a>
+			<a href="#"><i class="fab fa-2x fa-facebook-f"></i></a>
+			<a href="#"><i class="fab fa-2x fa-instagram"></i></a>
+			<a href="#"><i class="fab fa-2x fa-twitter"></i></a>
+		</div>
+	</footer>
+	<!-- /Footer -->
+	<script src="database.json"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- map -->
+	<script>
+		function initMap() {
+
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 4,
+				center: memberLocation || {lat: 0, lng: 0}
+			});
+
+			var marker = new google.maps.Marker({
+				position: memberLocation || {lat: 0, lng: 0},
+				map: map,
+				title: 'Membre'
+			});
+		}
+	</script>
+	<!-- /map -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUj8C8cEvLWw45-3sdNTUmZidBsoRQC-g&callback=initMap"
+	async defer></script>
+	<script type="text/javascript" src="main.js"></script>
+</body>
+</html>

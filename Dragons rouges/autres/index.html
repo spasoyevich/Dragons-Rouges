@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dragons</title>
+	<meta charset="utf-8">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+	<script type="text/javascript" src="database.json"></script>
+	<script type="text/javascript">
+
+		var listOrderer = function (list) {
+			var listSorted = list.sort();
+			return listSorted;
+		};
+
+		var listOrdererReverse = function (list) {
+			var listReversed = list.reverse();
+			return listReversed;
+		};
+
+//remplit le tableau de nom
+		var nameListPopulate = function () {
+			var nameList = [];
+			var nameFirstname = "";
+			var name = "";
+			for (let i = 0; i < database.length; i++) {
+				nameFirstname = (database[i].name);
+				name = nameFirstname.split(" ")[1];
+				nameList.push(name);
+			};
+			return nameList;
+		};
+//remplit et classe le tableau de date
+		var dateRegisterSorter = function () {
+			var sortedMembersListByDate = [];
+			var dateList = [];
+			var nameList = [];
+			var dateGmt = "";
+			var date = "";
+			var name = "";
+			for (let i = 0; i < database.length; i++) {
+				name = database[i].name;
+				dateGmt = database[i].registered;
+				date = dateGmt.split(" ")[0];
+				dateList.push([date, name]);
+			};
+
+			dateList.sort();
+
+			dateList.forEach(function(element) {
+			sortedMembersListByDate.push(dateList[dateList.indexOf(element)][1]);
+			});
+
+			return sortedMembersListByDate;
+		};
+
+//fonction retournant la proportion h/f
+		var genderStat = function () {
+			var femaleCount = 0;
+			var maleCount = 0;
+			var gender = "";
+			for (let i = 0; i < database.length; i++) {
+				gender = database[i].gender;
+
+				if (gender === "female") {
+					femaleCount++;
+				} else {
+					maleCount++
+				};
+			};
+			console.log("total de femme : " + femaleCount);
+			console.log("total d'homme : " + maleCount);
+		};
+
+
+		//faire fonction pour afficher les statistiques (proportion h/f, proportion d'âge)
+
+		var ageStat = function () {
+
+			var ageCount_17less = 0;
+			var ageCount_18_25 = 0;
+			var ageCount_26_35 = 0;
+			var ageCount_36_45 = 0;
+			var ageCount_46_55 = 0;
+			var ageCount_56_65 = 0;
+			var ageCount_66more = 0;
+
+			for (let i = 0; i < database.length; i++) {
+				age = database[i].age;
+
+				if (age < 18) {
+					ageCount_17less++;
+				} else if (age >= 18 && age <= 25) {
+					ageCount_18_25++;
+				} else if (age >= 26 && age <= 35) {
+					ageCount_26_35++;
+				} else if (age >= 36 && age <= 45) {
+					ageCount_36_45++;
+				} else if (age >= 46 && age <= 55) {
+					ageCount_46_55++;
+				} else if (age >= 56 && age <= 65) {
+					ageCount_56_65++;
+				} else {
+					ageCount_66more++;
+				};
+			};
+			console.log("age < 18 : " + ageCount_17less);
+			console.log("age compris entre 18 et 25 ans : " + ageCount_18_25);
+			console.log("age compris entre 26 et 35 ans : " + ageCount_26_35);
+			console.log("age < 18 : " + ageCount_17less);
+			console.log("age < 18 : " + ageCount_17less);
+			console.log("age < 18 : " + ageCount_17less);
+			console.log("age < 18 : " + ageCount_17less);
+		};
+
+		ageStat();
+		//genderStat();
+		//console.log(dateRegisterSorter());
+		//console.log(listOrderer(nameListPopulate()));
+		//console.log(listOrdererReverse(nameListPopulate()));
+	</script>
+</body>
+</html>
